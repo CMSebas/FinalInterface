@@ -12,6 +12,11 @@ public class VentListarProductos extends Frame {
     private Panel panelConPadding;
     private Label titulo;
     private Controller controller;
+    private TextArea textArea;
+
+    private Button botonVolver;
+
+    private Panel panelBoton;
 
     public VentListarProductos(Controller controller, Ventana1 ventanaPrincipal) {
         this.ventanaPrincipal = ventanaPrincipal;
@@ -23,13 +28,13 @@ public class VentListarProductos extends Frame {
         setLayout(new BorderLayout());
 
 
-        // Título
+        
         titulo = new Label("LISTADO DE PRODUCTOS", Label.CENTER);
         titulo.setFont(new Font("Arial", Font.BOLD, 18));
         add(titulo, BorderLayout.NORTH);
 
-        // Área de texto para mostrar los proveedores
-        TextArea textArea = new TextArea();
+        
+        textArea = new TextArea();
 
         textArea.setEditable(false);
         textArea.setFont(new Font("Arial", Font.ITALIC, 13));
@@ -43,18 +48,21 @@ public class VentListarProductos extends Frame {
         panelConPadding.add(textArea);
         add(panelConPadding, BorderLayout.CENTER);
 
-        // Botón de volver
-        Button botonVolver = new Button("Volver");
-        botonVolver.addActionListener(e -> {
-            this.setVisible(false);
-            ventanaPrincipal.setVisible(true);
+        
+        botonVolver = new Button("Volver");
+        botonVolver.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setVisible(false);
+                ventanaPrincipal.setVisible(true);
+            }
         });
 
-        Panel panelBoton = new Panel();
+         panelBoton = new Panel();
         panelBoton.add(botonVolver);
         add(panelBoton, BorderLayout.SOUTH);
 
-        // Cierra solo esta ventana
+        
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {

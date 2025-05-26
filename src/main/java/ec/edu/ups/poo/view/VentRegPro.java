@@ -4,7 +4,11 @@ package ec.edu.ups.poo.view;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
 import ec.edu.ups.poo.controllers.Controller;
+import ec.edu.ups.poo.controllers.Ventana1Controller;
 import ec.edu.ups.poo.models.Producto;
 import ec.edu.ups.poo.models.Proveedor;
 
@@ -97,6 +101,13 @@ public class VentRegPro extends Frame implements ActionListener {
         panelBoton.add(boton1);
 
         add(panelGeneral);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                ventanaPrincipal.setVisible(true);
+                dispose();
+            }
+        });
 
 
 
@@ -121,7 +132,7 @@ public class VentRegPro extends Frame implements ActionListener {
 
             JOptionPane.showMessageDialog(null, "Datos guardados exitosamente.");
 
-            // Limpiar campos y volver a la ventana principal
+            
             textField1.setText("");
             textField2.setText("");
             textField3.setText("");

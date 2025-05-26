@@ -20,8 +20,12 @@ public class VentAsignarProveedor extends Frame {
     private Label titulo;
     private Label labelID;
     private Panel panelCentral;
+    private Panel panelBotones;
+    private Panel panelTexto;
+    private Panel panelIngreso;
     private Button botonAsignar;
     private Button botonVolver;
+    private TextArea textArea;
 
     public VentAsignarProveedor(Ventana1 ventanaPrincipal, Controller controller, Producto productoAsociado) {
         this.ventanaPrincipal = ventanaPrincipal;
@@ -33,17 +37,17 @@ public class VentAsignarProveedor extends Frame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
-        // Título
+        
         titulo = new Label("ASIGNAR PROVEEDOR EXISTENTE", Label.CENTER);
         titulo.setFont(new Font("Arial", Font.BOLD, 16));
         add(titulo, BorderLayout.NORTH);
 
-        // Panel central con campo de ingreso
+        
 
         panelConPadding = new Panel(new FlowLayout(FlowLayout.CENTER, 20, 20));
         panelCentral = new Panel(new BorderLayout(10,10));
 
-        TextArea textArea = new TextArea(5, 5);
+        textArea = new TextArea(5, 5);
         textArea.setEditable(false);
         textArea.setFont(new Font("Arial", Font.PLAIN, 13));
 
@@ -51,13 +55,13 @@ public class VentAsignarProveedor extends Frame {
             textArea.append(p.toString() + "\n");
         }
 
-        Panel panelTexto = new Panel(new BorderLayout());
+        panelTexto = new Panel(new BorderLayout());
         panelTexto.add(new Label("Proveedores registrados:", Label.LEFT), BorderLayout.NORTH);
         panelTexto.add(textArea, BorderLayout.CENTER);
 
 
-        // --- Ingreso de ID + mensaje ---
-        Panel panelIngreso = new Panel(new GridLayout(3, 1, 5, 5));
+        
+        panelIngreso = new Panel(new GridLayout(3, 1, 5, 5));
         panelIngreso.setPreferredSize(new Dimension(580, 100));
         Label labelID = new Label("Ingrese ID del proveedor:", Label.CENTER);
         campoIDProveedor = new TextField(20);
@@ -73,46 +77,51 @@ public class VentAsignarProveedor extends Frame {
 
         add(panelConPadding, BorderLayout.CENTER);
 
-        // Botón para asignar
+        
         botonAsignar = new Button("Asignar");
-        botonAsignar = new Button("Asignar");
-        botonAsignar.addActionListener(e -> {
-            try {
-                int id = Integer.parseInt(campoIDProveedor.getText().trim());
+        botonAsignar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String texto = campoIDProveedor.getText().trim();
+
+                if (!texto.matches("\\d+")) {
+                    JOptionPane.showMessageDialog(VentAsignarProveedor.this, "Ingresa un número válido.",
+                            "Error", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+
+                int id = Integer.parseInt(texto);
                 Proveedor proveedorSeleccionado = controller.buscarProveedorPorID(id);
 
                 if (proveedorSeleccionado != null && productoAsociado != null) {
                     productoAsociado.agregarProveedor(proveedorSeleccionado);
                     controller.agregarProductoDesdeGUI(productoAsociado);
 
-                    JOptionPane.showMessageDialog(this, "✅ Proveedor asignado correctamente.",
+                    JOptionPane.showMessageDialog(VentAsignarProveedor.this, "✅ Proveedor asignado correctamente.",
                             "Éxito", JOptionPane.INFORMATION_MESSAGE);
 
-                    this.setVisible(false);
+                    setVisible(false);
                     ventanaPrincipal.setVisible(true);
                 } else {
-                    JOptionPane.showMessageDialog(this, "❌ No se encontró proveedor con ese ID.",
+                    JOptionPane.showMessageDialog(VentAsignarProveedor.this, "❌ No se encontró proveedor con ese ID.",
                             "Error", JOptionPane.WARNING_MESSAGE);
                 }
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(this, "⚠️ Ingresa un número válido.",
-                        "Error", JOptionPane.WARNING_MESSAGE);
             }
         });
 
-        // Botón para volver
+        
         botonVolver = new Button("Volver");
         botonVolver.addActionListener(e -> {
             this.setVisible(false);
             ventanaPrincipal.setVisible(true);
         });
 
-        Panel panelBotones = new Panel(new FlowLayout());
+        panelBotones = new Panel(new FlowLayout());
         panelBotones.add(botonAsignar);
         panelBotones.add(botonVolver);
         add(panelBotones, BorderLayout.SOUTH);
 
-        // Comportamiento al cerrar
+        
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {

@@ -24,6 +24,7 @@ public class Ventana1 extends Frame implements ActionListener {
     private Button boton6;
     private Button boton7;
     private Button boton8;
+    private Button boton9;
 
     public Ventana1(Controller controller) {
         this.controller = controller;
@@ -54,7 +55,8 @@ public class Ventana1 extends Frame implements ActionListener {
         boton4 = new Button("REGISTRAR PRODUCTOS");
         boton5 = new Button("REGISTRAR SOLICITUD");
         boton6 = new Button("VER SOLICITUD");
-        boton7 = new Button("REGISTRAR EMPLEADO");
+        boton7 = new Button("CAMBIAR ESTADO SOLICITUD");
+        boton9=new Button("CALCULAR TOTAL DE SOLICITUD");
         boton8 = new Button("SALIR");
 
 
@@ -66,6 +68,8 @@ public class Ventana1 extends Frame implements ActionListener {
         panelBotones.add(boton5);
         panelBotones.add(boton6);
         panelBotones.add(boton7);
+        panelBotones.add(boton9);
+
         panelBotones.add(boton8);
 
         boton1.addActionListener(this);
@@ -75,7 +79,10 @@ public class Ventana1 extends Frame implements ActionListener {
         boton8.addActionListener(this);
         boton4.addActionListener(this);
         boton5.addActionListener(this);
+        boton6.addActionListener(this);
         boton7.addActionListener(this);
+        boton9.addActionListener(this);
+
 
 
 
@@ -103,7 +110,7 @@ public class Ventana1 extends Frame implements ActionListener {
 
         } else if (e.getSource() == boton2) {
             VentRegPro ventanaPro = new VentRegPro(this, controller);
-// NO se llama al setter, porque no hay producto
+
             ventanaPro.setVisible(true);
             this.setVisible(false);
         }else if (e.getSource() == boton3) {
@@ -124,20 +131,30 @@ public class Ventana1 extends Frame implements ActionListener {
 
         }
         else if(e.getSource() == boton5) {
-           VentRegSolic ventanaSolic = new VentRegSolic(this);
+           VentRegSolic ventanaSolic = new VentRegSolic(this,controller);
            ventanaSolic.addWindowListener(new Ventana1Controller());
            ventanaSolic.setVisible(true);
             this.setVisible(false);
-        }
-        else if(e.getSource() == boton7){
-            VentRegEmpleado ventRegEmp = new VentRegEmpleado(this);
-            ventRegEmp.addWindowListener(new Ventana1Controller());
-            ventRegEmp.setVisible(true);
+        } else if (e.getSource() == boton6) {
+            VentListarSoli ventanaListaSoli = new VentListarSoli(controller, this);
+            ventanaListaSoli.setVisible(true);
+            this.setVisible(false);
+
+        } else if(e.getSource() == boton7){
+            VentCambiarEstadoSoli ventana = new VentCambiarEstadoSoli(controller, this);
+            this.setVisible(false);
+            ventana.setVisible(true);
+            this.setVisible(false);
+
+        } else if (e.getSource() == boton9) {
+            VentCalcularTotalSoli ventana = new VentCalcularTotalSoli(controller, this);
+            this.setVisible(false);
+            ventana.setVisible(true);
             this.setVisible(false);
 
         }
 
-        }
+    }
 
 
 
